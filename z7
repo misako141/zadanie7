@@ -17,86 +17,76 @@ namespace zadanie7
                 public int group;
                 public string data;
             }
-            public List<Student> stud = new List<Student>();
+            public List<Student> s = new List<Student>();
 
             public string funkfio(string ffio)
             {
-                string realfio = "";
-                for (int i = 0; i < ffio.Length; i++)
-                {
-                    if (ffio[i] != ' ')
-                    {
-                        realfio += ffio[i];
+                string rf = "";
+                for (int i = 0; i < ffio.Length; i++){
+                    if (ffio[i] != ' '){
+                        rf += ffio[i];
                     }
-                    else break;
+                    else 
+                    break;
 
                 }
-                return realfio;
+                return rf;
             }
-            public string funkinicfio(string finfio)
-            {
-                string realinfio = "";
+            public string funkinicfio(string ff){
+                string real = "";
                 string k1 = "", k2 = "";
-                for (int i = 0; i < finfio.Length; i++)
-                {
-                    if (finfio[i] != ' ')
-                    {
-                        realinfio += finfio[i];
+                for (int i = 0; i < ff.Length; i++){
+                    if (ff[i] != ' '){
+                        real += ff[i];
                     }
-                    else
-                    {
-                        k1 += finfio[i + 1];
+                    else{
+                        k1 += ff[i + 1];
                         i++;
-                        for(int j=i; j< finfio.Length; j++)
-                        {
-                            if (finfio[j] == ' ')
-                            {
+                        for(int j=i; j< ff.Length; j++){
+                            if (ff[j] == ' '){
 
-                                k2 += finfio[j + 1];
+                                k2 += ff[j + 1];
                                 break;
                             }
                         }
                         break;
                     }
                 }
-                realinfio += " " + k1.ToUpper() + "." + k2.ToUpper() + ".";
-                return realinfio;
+                real += " " + k1.ToUpper() + "." + k2.ToUpper() + ".";
+                return real;
             }
-            public void addstud(int ids, string fio, int group, string data){
-                stud.Add(new Student() { ids = ids, fio = fio, group = group, data = data });
+            public void adds(int ids, string fio, int group, string data){
+                s.Add(new Student() { ids = ids, fio = fio, group = group, data = data });
             }
             public void del(int ids){
-                for (int i = 0; i < stud.Count; i++){
-                    if (stud[i].ids == ids) stud.RemoveAt(i);
+                for (int i = 0; i < s.Count; i++){
+                    if (s[i].ids == ids) s.RemoveAt(i);
                 }
             }
             public void izmen(int ids, string fio, int group, string data){
-                for (int i = 0; i < stud.Count; i++){
-                    if (stud[i].ids == ids){
-                        stud[i].fio = fio;
-                        stud[i].group = group;
-                        stud[i].data = data;
+                for (int i = 0; i < s.Count; i++){
+                    if (s[i].ids == ids){
+                        s[i].fio = fio;
+                        s[i].group = group;
+                        s[i].data = data;
                     }
-
                 }
             }
             public void show(){
-                foreach (var i in stud){
+                foreach (var i in s){
                     Console.WriteLine(i.fio + "\n");
                 }
             }
-            public void poiskID(int id){
-                Console.WriteLine(stud[id].ids + "\n" + stud[id].fio + "\n" + stud[id].group + "\n" + stud[id].data + "\n");
-            }
+            
             public void age(int idi){
-                DateTime idage = ToDateTime(stud[idi].data);
+                DateTime idage = ToDateTime(s[idi].data);
                 DateTime now = DateTime.Today;
                 int age = now.Year - idage.Year;
                 if (idage > now.AddYears(-age)) age--;
                 Console.WriteLine(age + " - возраст студента.");
             }
             public void age18(string s1){
-                foreach (var idi18 in stud){
+                foreach (var idi18 in s){
                     DateTime idage = ToDateTime(idi18.data);
                     DateTime now = DateTime.Today;
                     int age = now.Year - idage.Year;
@@ -110,25 +100,26 @@ namespace zadanie7
                 }
 
             }
-
+            public void inicfio(int IDs){
+                Console.WriteLine("\n" + funkinicfio(s[IDs].fio));
+            }
+            public void poiskID(int id){
+                Console.WriteLine(s[id].ids + "\n" + s[id].fio + "\n" + s[id].group + "\n" + s[id].data + "\n");
+            }  
             public void searchFIO(string sFIO){
                 string tfio = "";
-                foreach (var i in stud){
+                foreach (var i in s){
                     tfio = funkfio(i.fio);
                     if (tfio == sFIO){
                         Console.WriteLine("\n" + i.ids + "\n" + i.fio + "\n" + i.group + "\n" + i.data + "\n");
                     }
                 }
             }
-            public void inicfio(int IDstud){
-                Console.WriteLine("\n" + funkinicfio(stud[IDstud].fio));
-            }
-
             static void Main(string[] args){
                 Lib L = new Lib();
                 int ids = 0;
                 int a;
-                do{
+                do {
                     Console.WriteLine("\nВведите: \n 1. Чтобы добавить студента \n 2. Чтобы изменить \n 3. Удалить \n 4. Вывести ФИО \n " +
                         "5. Вывести информацию по ID \n 6. Возраст выбранного по ID студента\n 7. Студенты 18+, 18-\n 8. Поиск по фамилии\n 9. Фамилия и инициалы");
                     a = ToInt32(Console.ReadLine());
@@ -140,17 +131,17 @@ namespace zadanie7
                         int group = ToInt32(Console.ReadLine());
                         Console.WriteLine("Дата рождения дд.мм.гггг: ");
                         string data = Console.ReadLine();
-                        L.addstud(ids, fio, group, data);
+                        L.adds(ids, fio, group, data);
                         ids++;
                     }
                     else if (a == 2){
-                        Console.WriteLine("\nID студента: ");
+                        Console.WriteLine("\nID: ");
                         int idsT = ToInt32(Console.ReadLine());
                         Console.WriteLine("ФИО: ");
                         string fio = Console.ReadLine();
                         Console.WriteLine("Группа: ");
                         int group = ToInt32(Console.ReadLine());
-                        Console.WriteLine("Дата рождения дд.мм.гггг: ");
+                        Console.WriteLine("Дата рождения: ");
                         string data = Console.ReadLine();
                         L.izmen(idsT, fio, group, data);
                     }
@@ -160,7 +151,7 @@ namespace zadanie7
                     }
                     else if (a == 4) L.show(); 
                     else if (a == 5){
-                        Console.WriteLine("Введите ID студента");
+                        Console.WriteLine("ID:");
                         int idss = ToInt32(Console.ReadLine());
                         L.poiskID(idss);
                     }
@@ -173,8 +164,8 @@ namespace zadanie7
                     else if (a == 7)
                     {
                         Console.WriteLine("Введите 's' инфа по <18лет\nВведите 'a' инфа по >18лет: ");
-                        string ss = Console.ReadLine();
-                        L.age18(ss);
+                        string b = Console.ReadLine();
+                        L.age18(b);
                     }
                     else if (a == 8)
                     {
@@ -182,11 +173,11 @@ namespace zadanie7
                         string sFIO = Console.ReadLine();
                         L.searchFIO(sFIO);
                     }
-                    else if (a== 9)
+                    else if (a == 9)
                     {
                         Console.WriteLine("ID: ");
-                        int IDstud = ToInt32(Console.ReadLine());
-                        L.inicfio(IDstud);
+                        int ID1= ToInt32(Console.ReadLine());
+                        L.inicfio(ID1);
                     }
 
                 } while (a != 0);
